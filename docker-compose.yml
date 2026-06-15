@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: anomaly_redis
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+
+  backend:
+    build: ./backend
+    container_name: anomaly_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"      # use 2 of your 4 cores
+          memory: 1G
+
+  frontend:
+    build: ./frontend
+    container_name: anomaly_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
