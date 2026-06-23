@@ -1,8 +1,6 @@
-version: "3.8"
-
 services:
   redis:
-    image: redis:7-alpine
+    image: redis:8.8.0-alpine
     container_name: anomaly_redis
     ports:
       - "6379:6379"
@@ -31,14 +29,14 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "2.0"      # use 2 of your 4 cores
+          cpus: "2.0"
           memory: 1G
 
   frontend:
     build: ./frontend
     container_name: anomaly_frontend
     ports:
-      - "3000:80"
+      - "3000:3000"
     depends_on:
       - backend
     deploy:

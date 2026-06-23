@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useWebSocket } from "./hooks/useWebSocket";
-import { StatsCards } from "./components/StatsCards";
+import { StatsCards } from "./components/StatsCard";
 import { MetricsChart } from "./components/MetricsChart";
 import { AnomalyTable } from "./components/AnomalyTable";
 import type { Reading, Stats, WSMessage } from "./types";

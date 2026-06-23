@@ -1,5 +1,5 @@
 # Build stage
-FROM node:20-slim AS build
+FROM node:26.3.1-slim AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
@@ -7,8 +7,11 @@ COPY . .
 RUN npm run build
 
 # Serve stage
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+FROM node:26.3.1-slim AS runtime
+WORKDIR /app
+ENV NODE_ENV=production
+COPY package*.json ./
+RUN npm install --omit=dev
+COPY --from=build /app/dist ./dist
+EXPOSE 3000
+CMD ["npm", "start"]

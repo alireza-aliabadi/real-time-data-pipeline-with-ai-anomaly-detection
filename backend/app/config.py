@@ -17,6 +17,9 @@ class Settings(BaseSettings):
 
     # Producer
     produce_interval_ms: int = 200  # 5 msgs/sec
+    
+    # Backend Setting
+    cors_origins: list[str] = ["*"]
 
     class Config:
         env_file = ".env"

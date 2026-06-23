@@ -34,7 +34,7 @@ app = FastAPI(title="Realtime Anomaly Pipeline", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://yourdomain.com"],  # replace wildcard
+    allow_origins=["https://yourdomain.com"],
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],

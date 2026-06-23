@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.14.6-slim
 
 WORKDIR /app
 
@@ -6,8 +6,9 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc g++ && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml ./
+RUN python -c "import tomllib; deps = tomllib.load(open('pyproject.toml', 'rb'))['project']['dependencies']; print('\\n'.join(deps))" > requirements.txt \
+    && pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
 
