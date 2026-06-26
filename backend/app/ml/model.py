@@ -24,7 +24,7 @@ class AnomalyModel:
             n_estimators=100,
             contamination=settings.contamination,
             max_samples=256,      # keeps memory low
-            n_jobs=2,             # use 2 of your 4 cores
+            n_jobs=2,             # use 2 cores
             random_state=42,
         )
         self.model.fit(X_scaled)
